@@ -1,0 +1,64 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+---
+title: "Correspondence Analysis"
+output: html_notebook
+---
+
+```{r}
+install.packages("ca")
+library(ca)
+```
+# Smoke data
+
+Table containing 5 rows (staff group) and 4 columns (smoking categories), giving the frequencies of smoking categories in each staff group in a fictional organization.
+
+```{r}
+data("smoke")
+smoke
+```
+
+Row I (Staff Groups): SM (Senior managers), JM(Junior Managers), SE(Senior Employees), JE(Junior Employees) and Secretaries 
+Columns J (Smoking Habits):  None, Light, Medium and Heavy
+
+```{r}
+smoke.ca <- ca(smoke)
+smoke.ca
+
+```
+
+The above output has the percentages of explained inertia for all possible dimensions
+The second and the third tables above show masses, chi-squared distances of points to their average, inertias and standard coordinates, restricted to 2 dimensions
+
+```{r}
+### To see a list of available entries 
+names(smoke.ca)
+smoke.ca$coord
+
+```
+```{r}
+summary(smoke.ca)
+```
+Similar to the above, summary(ca) also presents us with the following information:
+* eigenvalues 
+* relative percentages of explained inertia of all dimensions
+* a scree plot
+* cumulated percentages
+* principal coordinates for the first 2 dimensions (k=1, k=2)
+* Squared correlations (cor) and contributions (ctr) of these points (display next to the coordinate), display in permills
+```{r}
+## Visualizing using a symmetric map
+smoke.ca.plot <- plot(smoke.ca)
+smoke.ca.plot
+```
+
+
+```{r}
+smoke.ca.biplot <- plot(ca(smoke), mass = TRUE, contrib = "absolute",map = "rowgreen", arrows = c(FALSE, TRUE))
+smoke.ca.biplot
+
+
+```
+
